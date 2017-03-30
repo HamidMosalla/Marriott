@@ -1,0 +1,30 @@
+﻿@model List<Marriott.Business.Marketing.RoomType>
+
+@{
+    //ViewBag.ProgressBar = MarketingController.ProgressBarText;
+}
+
+<div>
+    <div class="form-horizontal">
+    <hr />
+        <div class="panel panel-default">
+            <div class="panel-heading">Room Types</div>
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                    @foreach (var roomType in Model)
+                    {
+                        <tr>
+                            <td>
+                                Room Description: @Html.Label(roomType.Description)<br />
+                                <a href="\Marketing\Edit?RoomTypeId=@roomType.RoomTypeId" class="btn btn-success" role="button">Edit</a>
+                            </td>
+                            <td><img src="@roomType.ImageUrl" /></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

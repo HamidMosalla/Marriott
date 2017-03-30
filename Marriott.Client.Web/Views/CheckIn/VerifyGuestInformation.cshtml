@@ -1,0 +1,32 @@
+@using Marriott.Client.Web.Controllers
+
+@model Marriott.Client.Web.Models.CheckIn.VerifyGuestInformation
+
+@{
+    ViewBag.ProgressBar = CheckInController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 1;
+}
+
+<div>
+    
+    @Html.Action("ReservationInformation", Model.ReservationId)
+   
+    @using (Html.BeginForm("VerifyGuestInformation", "CheckIn", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(x => x.ReservationId)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Guest Information</div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    @Html.Action("GuestInformation", Model.ReservationId)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    }
+</div>

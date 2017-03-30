@@ -1,0 +1,200 @@
+ToDo
+====
+
+- Room Allocation Failed UC
+	- should FailedRoomAllocation use a composite key of ReservationId and RoomTypeId?
+	- when this happens, CheckInController redirects the fda to RoomAllocationFailed which returns a view with just an error on it.
+		- need to think about how a room allocation failure effects downstream processes.
+		- for example, if the guest cannot check into the hotel b/c we cannot allocate a room to them and have to send them to a partner hotel, we want to make sure we do not change them
+			- a reservation cancellation fee
+			- a reservation noshow fee
+	- the approach for this process hinges on if we can expect more then one room allocation failure at the point we've already had one. The following scenario:
+		- the fda is searching for another room to give them
+		- the fda finds a room, reserves it, then immediatley checks the guest in
+		- if, at this point, we receive another allocation failure, the technical solution (FailedRoomAllocation), will not work, as we're using the ReservationId as the primary key
+		- this point is based on another assumption, and that is you can try to allocate a room after 1 to n allocaiton failure for the exitsing reservation id intead of creating a NEW
+		  resrevation id and doing it that way
+			- currently, the code forces the user to go through the reservation process to search for rooms, and will generate a new reservation id, so we really should not have to worry about it
+	- would be cool to return the fda other rooms that would be either an upgrade or considered teh same level of the room type for the reservation
+		- this way, it's easy for the fda to handle this edge case.
+		- in this case, the fda should be able to control the cost of the room (give the guest a discount) or comp them the room
+
+- Extend Stay UC
+	- allows a guest that is checked in to extend their stay at the hotel
+	- a couple questions
+		- does extending a stay require new reservation and new room allocating (even if the room is the same room?)
+	- in the case where the user wants to keep the TYPE of room, but the physical room itself must change, how do we handle deallocating the room without all the billing/charging stuff?
+		- do we deallocate the room?
+		- we want it to be cleaned by house keeping, and deallocating the room is what puts that room on the "map" for housekeeping to clean first before other stay-over rooms
+
+- Invoice Guest UC
+	- what I GUESS are different ways for a guest to checkout of a hotel
+		- guest can checkout at front desk if they'd like
+			- here than can disput any charges on invoice easily
+		- guest can checkout from their room in they'd like
+			- by doing this, the guest is explictly agreeing to pay what is on the invoice that was slipped under their door (at least I think so)
+			- I'm not too sure when checking out in this manner when the payment against their credit card on file would be processed immediately or if the hotel would invoice them (send it in the mail) and they guest would pay when they received the invoice?
+		- https://www.quora.com/Is-there-any-reason-to-check-out-when-leaving-a-hotel-rather-than-just-leaving
+			- "Optional methods of checking out include":
+				- checking out in person at the front desk
+				- calling the front desk from your room
+				- TV checkout from your room
+				- and checking out using the hotels app.
+	- why it's important to always checkout of a hotel:
+		- https://www.quora.com/Is-there-any-reason-to-check-out-when-leaving-a-hotel-rather-than-just-leaving
+			- "You need to review your account to insure there are no unauthorized charges and that charges are posted correctly. Again, if you dispute a charge after you leave, it is much more difficult to prove it was not yours."
+	- some more research
+		- http://viewfromthewing.boardingarea.com/2016/04/18/hotel-charges-card-5-months-stay-long-long/
+		- http://www.flyertalk.com/forum/travelbuzz/728292-uhhhm-didn-t-you-already-receive-your-receipt-under-door-morning.html
+		- https://www.tripadvisor.com/ShowTopic-g32655-i61-k5466666-Does_a_printed_hotel_receipt_show_price_you_paid-Los_Angeles_California.html
+
+		- Line Item Billing UC
+	- daily billing of things like the room cost or any type of billing item, like the mini-bar, in-room movies, dry clearning or room service
+	- do we want to NOT record the room cost per day and just make that available at the point of invoicing?
+	- for the other items, we'd need a way to keep a running total/tally of those expenses for presentation of the final cost on the invoice
+
+- Overbooking Policy UC
+	- what happens if there is only one room left and two people are on the site and they click the complete button at the same time?
+	- the official "business requirement" is: while we are willing to accept overbooking, we are only willing to accept that up to a point.
+		- aka, if we have a 10% overbooking strategy, if we're already at that number when I complete reservation, want to make sure only one person gets the actual room
+        - this should happen only occasionally, and should not happen to a large amount of people at the same time
+	- MIKE:
+		- if the room count is still within the boundaries of the overbooking policy, then it should be "business as usual"
+		- if the room count has exceeded the overbooking policy, we need to tell the guest that their reservation could not be completed.
+			- a nice touch to add to the screen would be to show the guest alternatives...
+				- you could have this same room type on these dates...
+				- and/or you could have a different room type on the dates you want...
+
+- Room Service boundary UC
+	- order food/drinks to rooms
+	- we'd need a UI for the guest that shows items that can be ordered 
+	- we'd need a UI for the "kitchen" who is in charge of preparing the food
+	- we'd need a UI for the room service staff who deliver the meal to the room
+
+- Housekeeping Forecasting UC
+	- the idea behind this would be we have a forcasting service that based on
+			- occupancy
+			- number of guests checking out on a given day
+		the system would allcoate the correct amount of Housekeeping staff that would need to be on the clock given some algorithm
+	- the problem here is all of it is made up b/c I don't have access to a domain expert to explain to me how this is handled in the real world
+	- this idea of forecasting deman for staffing could/might extend beyond housekeeping and into the rest of the staff at the hotel as well.
+
+- Housekeeping boundary UC
+	- http://www.resortdata.com/housekeeping-management/
+		- this is a pretty detailed breakdown of how some software and UC's work in the "real world" of housekeeping
+		
+	- what I'd like to add/change
+		- add UI that support more than one housekeeper cleaning/marking rooms as clean
+			- current code in UpdateCleanRoomStatusHandler uses .RemoveRange/.AddRange and is an all or nothing op with what rooms are checked coming from POST via UI
+				- this UI/code assumes one user updating which rooms are clean
+				- this works fine if there is one housekeeper cleaning all the rooms
+				- add more than one housekeeper, and we'd have to change the code as the .RemoveRange/.AddRange calls assume a non-collaborative domain. 
+				- If there is more than one housekeeper, this optimistic approach could lead to data loss.
+		- add cleaning "status" per room
+			- more than just a checkbox for "clean"/"not clean", but rather more of a status of cleaning
+			- room not cleaned/room being cleaned/room cleaned
+
+- Reservation Pattern ("hard" vs. "soft" allocation)
+	- the current code discludes any room types over a given time period that are represented in the PendingReservation entity from being returned on the Reservation search screen.
+	- here is an example of how the system behaves
+		- we have 4 double rooms booked (ConfirmedResrevation) over the same time span
+		- user 1 comes to the site and searches for the same time span, and picks the final double room and starts into the reservation process
+			- at this point, the in process reservation is written to PendingReservation
+		- user 2 comes into the system and searches over the same time span for the currently CompletedReservation rooms AND the one PendingReservation room
+		- because user 1 is not finished with their resrvation yet (or their browser session has not timed out or the saga has not timed out if the user abondoned their browser), user 2 will not see that fifth and final room type yet in their search results
+	- this is a "hard" approach to the Reservation pattern
+		- we're setting aside resources for 15 minutes for a user that makes it all the way through the Reservation process so they're GUARANTEED that room at the end of the process
+	- another possible approch is to set aside the reservation when a user starts (still put it in PendingReservation), but instead of excluding those PendingReservation's from the room search
+	  allow the PendingReservation rooms to be returned as part of the reservation search potentially giving a guarantee to many users the roomt type and dates that MIGHT not be available at the
+	  end of the Reservation process
+		- this seems to work against the idea of the Reservation process though.
+	- Reservation Pattern defined: http://arnon.me/soa-patterns/reservation/
+		- "The Reservation pattern is an SOA-friendly way for services to provide partial commitments and guarantees"
+		- "Implement the Reservation pattern and have the services provide a level of guarantee on internal resources for a limited time."
+	- so, for the "soft" Reseravtion, what we're really talking about is the "level of guarantee". For hard, the level of guarantee is 100% (assumign no overbooking policy). for "soft" the level of 
+	  guarantee is no 100%.
+		- implementing soft would require more work in the area of compensating actions
+
+- JavaScript Timer
+	- see what the result it if the client side timer is "gamed", and never times out, and the saga DOES timeout after 20 minutes... what is the result like for the user?
+		- my guess is that we'll double check once more that the room is available before sending the Confirm reservation command 
+		- if we don't we'll receive and exception in the ConfirmReservationHandler b/c the PendingReservation has been deleted...
+
+	- Reservation timer thoughts. There are two potential ways to improve this, one uses the client, the other uses a combination of NSB handler and SignalR
+		- Client Side
+			- for every callback (one per second), have client side code invoke an ajax call with the current count on it
+			- an action mothod on the server will take the request, load Session[Reservation], and update the current count then save it back to session
+			- this way, when a user hits the F5/refresh button, we can check for the current count before returning it to them on the response
+			- this will keep the user from "gaming" the system, and resetting the timer to 15:00 just by refreshign their browser on a GET returned page
+			- probably better idea to store current count in separate Session variable b/c it will be read, updated, and saved back to session much more frequently than Session[Reservation]
+
+			- Pros:
+				- keeps user from resetting the client-side timer by hitting F5
+			- Cons:
+				- there will be a LOT of http request being made to the webserver just for the sake of updating a counter for each connected client/session
+				- this would result in resource issues for the web server under heavy load
+				- the constant read/write from session (if session is NOT kept in memeory) could end up turning into contention around disk/speed resources
+					- for example, if session is held in sql server, then the per second load/update/write could cause performance issues around sql server doing other, more important things
+		- NSB Saga
+			- when the client sends CreatePendingReservation, it starts a saga
+			- intially, the saga will invoke a SignalR hub that is responsible for pushing the current count down to the client (using ClientId)
+			- the saga stores the current count, then sets a timout for one second
+			- when the saga wakes up from the timeout, it checks in the current count is equal to the total count (900 seconds)
+			- if it is not, the saga again invokes the SignalR hub, increments the counter, stores it in its Data, then sets the timeout for one second
+			- if it is, then the saga publishes a message saying all done and Marks as complete
+			- the handler for the all done message invokes SignarlR hub that will call client side code to do a redirect to an MVC action method that will wipe the session, then redirect
+			  the user to the search page
+
+			- Pros:
+				- no way the client can every game/change the time b/c it's being pushed from the server
+				- the smarts/ownership of the PendingReservationTimeout is owned entireuly by the server/back-end process instead of tryig to coordinate a client-side run timer and a saga
+				  on teh server side
+			- Cons:
+				- performace of the saga. there is no contention here, b/c only one user/session/process logically will use their given Saga to push the count, store it, etc...
+				- logically, it makese sense
+				- physically however, we could have many sagas running for many conntected sessions. Even if we isolated this one piece of functionality to a single physical endpoint instance
+				  we still have to deal with saga look-up from persistence, load state, do work, change state, save back to persisitence for each second for each connected client.
+				- we could end up with a back-up of mesesages in teh queue b/c the endpoint is not quick enough to process all of them... plus, the timer might appear to be frozen or not show
+				  what is expected b/c of message backup/saga/endpoint performance
+
+- hook up credit-card validator at bincodes.com
+	- https://www.bincodes.com/users/
+
+- build out link/landing page for guests to be able to click on a link in their confirmation email and be brought to their reservations details page.
+	- from this page, they should be able to cancel their reservations
+		
+Questions that were asked, and their outcomes/explanations
+==========================================================
+- double check that ReservationPaymentInformation belongs in Billing. Do we ever use that data in a Billing operation?
+	- UPDATE, the reason we can't do this is b/c in ReservationCancellationPolicyViolatedHandler, we need to grab not only the cc info used for the reservation, but also
+		the price of the Room (a single night becomes the "penalty" for canceling a reservation too late). The RoomRate lives in Billing. Since we're in a handler, 
+		we can't cross boundaries to compose this information.
+	- I thought we only used it to put a hold on a credit card.
+	- ICreditCard service could be utlilized in Reservation boundary to put a hold on the credit card.
+	- That's the only place I can think of that we need the ReservationPaymentInformation, and since that command is sent from Reservation controller, and since it 
+		only deals with the data on RsservationPaymentInfo, Billing might not need it or care about it, b/c we're not actually CHARGING money to the CC, just using validating
+		it to hold the room reservation
+
+Questions/Answers/Links
+=======================
+
+http://udidahan.com/2012/12/10/service-oriented-api-implementations/ (Udi talks about invoiceing/generating invoice in the comments of the blog post)
+http://udidahan.com/2012/06/23/ui-composition-techniques-for-correct-service-boundaries/
+
+http://travelupdate.boardingarea.com/marriott-cancel-1159-pm-avoid-penalty-fees-new-policy-says/
+http://www.marriott.com/help/reserve-faqs.mi
+http://www.hotelogix.com/blog/2015/03/16/dynamic-room-allocation-a-boon-for-front-desk-managers/?utm_source=quora&utm_medium=mar261&utm_campaign=quoraans
+http://stackoverflow.com/questions/23459040/is-a-combination-of-credit-cards-number-and-expiration-date-unique
+http://stackoverflow.com/questions/4950245/in-entity-framework-code-first-how-to-use-keyattribute-on-multiple-columns
+http://www.moneytalksnews.com/heres-why-hotels-put-that-mysterious-hold-your-credit-card/
+https://www.hotwire.com/helpcenter/payment-billing/credit-debit-cards/match.jsp
+https://wallethub.com/edu/credit-card-transaction/25511/
+
+- EF6: composite key info: http://stackoverflow.com/questions/4950245/in-entity-framework-code-first-how-to-use-keyattribute-on-multiple-columns
+- http://stackoverflow.com/questions/23459040/is-a-combination-of-credit-cards-number-and-expiration-date-unique
+
+- how does putting a "hold" on a credit card work?
+	- http://www.moneytalksnews.com/heres-why-hotels-put-that-mysterious-hold-your-credit-card/
+		- "The amount varies, but as a rule, it’s the cost of the room, including tax, plus a set charge of between $50 and $200 per day."
+		- b/c this is Marriot, not Ritz-Carlton, let's assume that the charge of $50 per day is the norm. 
+		- sum the room rate for the timespan of the reservation and add $50 per day, and make that the amount that gets put on hold for the credit card at checkin

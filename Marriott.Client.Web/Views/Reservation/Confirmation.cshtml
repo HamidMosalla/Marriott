@@ -1,0 +1,58 @@
+﻿@using Marriott.Client.Web.Controllers
+@model Marriott.Client.Web.Models.Reservation.Reservation
+
+@{
+    ViewBag.ProgressBar = ReservationController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 4;
+}
+
+<div>
+    <div class="alert alert-success">
+        Thank you for booking with us! You will recive an email shortly where you can access your reservation details, change your reservation or cancel your reservation
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Reservation Details</div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Room Details</strong></div>
+                        <div class="panel-body" style="min-height: 250px;">
+                            @Html.LabelFor(x => x.RoomInformation.RoomTypeName): @Model.RoomInformation.RoomTypeName<br />
+                            @Html.LabelFor(x => x.CheckIn): @Model.CheckIn.ToShortDateString()<br />
+                            @Html.LabelFor(x => x.CheckOut): @Model.CheckOut.ToShortDateString()<br />
+                            @Html.LabelFor(x => x.RoomInformation.RoomRate): $@Model.RoomInformation.RoomRate.ToString()
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Guest Information</strong></div>
+                        <div class="panel-body" style="min-height: 250px;">
+                            @Html.LabelFor(x => x.GuestInformation.Email): @Model.GuestInformation.Email<br />
+                            @Html.LabelFor(x => x.GuestInformation.FirstName): @Model.GuestInformation.FirstName<br />
+                            @Html.LabelFor(x => x.GuestInformation.LastName): @Model.GuestInformation.LastName<br />
+                            @Html.LabelFor(x => x.GuestInformation.Address1): @Model.GuestInformation.Address1<br />
+                            @Html.LabelFor(x => x.GuestInformation.Address2): @Model.GuestInformation.Address2<br />
+                            @Html.LabelFor(x => x.GuestInformation.City): @Model.GuestInformation.City<br />
+                            @Html.LabelFor(x => x.GuestInformation.State): @Model.GuestInformation.State<br />
+                            @Html.LabelFor(x => x.GuestInformation.PostalCode): @Model.GuestInformation.PostalCode
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Payment Information</strong></div>
+                        <div class="panel-body" style="min-height: 250px;">
+                            @Html.LabelFor(x => x.PaymentInformation.CreditCardNumber): @Model.PaymentInformation.CreditCardNumber<br />
+                            @Html.LabelFor(x => x.PaymentInformation.CreditCardExpiry): @Model.PaymentInformation.CreditCardExpiry<br />
+                            @Html.LabelFor(x => x.PaymentInformation.CreditCardCcv): @Model.PaymentInformation.CreditCardCcv<br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿@using Marriott.Client.Web.Controllers
+@model Marriott.Client.Web.Models.CheckIn.Confirmation
+
+@{
+    ViewBag.ProgressBar = CheckInController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 4;
+}
+
+<div>
+    <fieldset>
+        <div class="alert alert-success">
+            Guest Checked in and assigned Room #@Model.RoomNumber
+        </div>
+    </fieldset>
+</div>

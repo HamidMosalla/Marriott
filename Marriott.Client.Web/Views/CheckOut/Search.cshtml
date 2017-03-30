@@ -1,0 +1,69 @@
+﻿@using Marriott.Client.Web.Controllers
+@using Marriott.Client.Web.Extensions
+@using Marriott.Client.Web.Models.CheckOut
+@model Search
+
+@{
+    ViewBag.ProgressBar = CheckOutController.ProgressBarText;
+}
+
+    <fieldset>
+
+        <div class="well">
+            Search by Room Number
+        </div>
+
+        @using (Html.BeginForm("Search", "CheckOut"))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.RoomNumber)
+                @Html.TextBoxWithBlankDefaultIntegerValue(nameof(Search.RoomNumber), Model.RoomNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.RoomNumber, "", new { @class = "text-danger" })
+            </div>
+
+            <input type="submit" class="btn btn-success" value="Search" />
+        }
+
+    </fieldset>
+    
+    <div>&nbsp;</div>
+    
+    <fieldset>
+        <div>
+            @if (Model.SearchExecuted && Model.Result == null)
+            {
+                <div class="alert alert-warning">
+                    No results found for the entered Room Number. Please try again.
+                </div>
+            }
+
+            @if (Model.Result != null)
+            {
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Guest Information</div>
+
+                    <div class="panel-body">
+                        <div class="field inline">
+                            @Html.LabelFor(x => x.RoomNumber): @Html.DisplayTextFor(x => x.RoomNumber)
+                        </div>
+                        <div class="field inline">
+                            @Html.LabelFor(x => x.Result.GuestFullName): @Html.DisplayTextFor(x => x.Result.GuestFullName)
+                        </div>
+                        <div class="field inline">
+                            @Html.LabelFor(x => x.Result.CheckIn): @Model.Result.CheckIn.ToShortDateString()
+                        </div>
+                        <div class="field inline">
+                            @Html.LabelFor(x => x.Result.CheckOut): @Model.Result.CheckOut.ToShortDateString()
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success" onclick="location.href='@Url.Action("VerifyInvoice", "CheckOut", new { reservationId = Model.Result.ReservationId })'">Continue</button>
+                </div>
+            }
+        </div>
+    </fieldset>

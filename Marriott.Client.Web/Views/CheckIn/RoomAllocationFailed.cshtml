@@ -1,0 +1,18 @@
+﻿@using Marriott.Client.Web.Controllers
+
+@{
+    ViewBag.ProgressBar = CheckInController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 2;
+}
+
+<fieldset>
+    <div class="alert alert-danger">
+        <strong>Room Allocation failed.</strong> 
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        Please <a href="/Reservation/Search" class="alert-link">search for a room</a> with the guest's checkin and checkout date to see if it's still possible to allocate any room to them.
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        If this is not possible, please mark the room allocation as failed and call partnering hotel to find the guest accomodations
+    </div>
+</fieldset>  

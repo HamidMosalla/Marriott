@@ -1,0 +1,72 @@
+﻿@using Marriott.Client.Web.Controllers
+
+@model  Marriott.Business.Guest.GuestInformation 
+
+@{
+    ViewBag.ProgressBar = ReservationController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 1;
+}
+
+@section scripts
+{
+    <script src="~/Scripts/Reservation/timeLeftOnPendingReservation.js"></script>
+    <script>
+        CountDownTimer(@ViewBag.TimeLeftOnPendingReservation);
+
+        ////this only handles F5 and ctrl + R. I need a way to handle the browser's refresh button
+        ////http://stackoverflow.com/questions/2482059/disable-f5-and-browser-refresh-using-javascript
+        //function refresh(e)
+        //{
+        //    if (((e.which || e.keyCode) == 116) || (e.keyCode == 82 && e.ctrlKey))
+        //    {
+        //        alert('page reloading is disabled');
+        //        e.preventDefault();
+        //    }
+        //};
+        //$(document).bind("keydown", refresh);
+
+        //2
+        //window.onbeforeunload = function () {
+        //    return "Are you sure you want to leave our website?";
+        //}
+
+        //$(function () {
+        //    $('a, input, button').click(function () {
+        //        window.onbeforeunload = null;
+        //    });
+        //});
+
+        //1
+        //$(window).bind('beforeunload', function () {
+        //    //save info somewhere
+        //    var timeLeftOnPendingReservation = $('#TimeLeftOnPendingReservation').val();
+        //    return 'are you sure you want to leave?';
+        //});
+
+    </script>
+}
+
+<div>
+    <fieldset>
+        
+        <div class="well">
+            <div class="row">
+                <div class="col-md-2">Enter your information</div>
+                <div class="col-md-8">&nbsp;</div>
+                <div class="col-md-2"><div id="Counter" name="Counter"></div></div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("GuestInformation", "Reservation", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <input type="hidden" id="TimeLeftOnPendingReservation" name="TimeLeftOnPendingReservation" value="@ViewBag.TimeLeftOnPendingReservation">
+
+            @Html.Partial("_EditGuestInformation", Model)
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-success">Next</button>
+                </div>
+            </div>
+        }
+    </fieldset>
+</div>

@@ -1,0 +1,51 @@
+﻿@using Marriott.Business.Billing
+@using Marriott.Client.Web.Controllers
+
+@model PaymentInformation
+
+@{
+    ViewBag.ProgressBar = ReservationController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 2;
+}
+
+@section scripts 
+{
+    <script src="~/Scripts/jquery.signalR-2.2.1.js"></script>
+    <script src="~/SignalR/hubs"></script>
+    <script src="~/Scripts/Reservation/validateCreditCard.js"></script>
+    <script src="~/Scripts/Reservation/timeLeftOnPendingReservation.js"></script>
+    <script>
+        CountDownTimer(@ViewBag.TimeLeftOnPendingReservation);
+    </script>    
+}
+
+<fieldset>
+    
+    <div id="errorMessage" class="alert alert-danger" style="display: none;">
+        Credit Card Validation Failed
+    </div>
+    
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">Enter your payment information</div>
+            <div class="col-md-7">&nbsp;</div>
+            <div class="col-md-2"><div id="Counter" name="Counter"></div></div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Payment", "Reservation", FormMethod.Post, new { id = "form" }))
+    {
+        <input type="hidden" id="TimeLeftOnPendingReservation" name="TimeLeftOnPendingReservation" value="@ViewBag.TimeLeftOnPendingReservation">
+        <input type="hidden" id="CreditCardCheckFailed" name="CreditCardCheckFailed" value="NotRun"/>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.Partial("_EditPaymentInformation", Model)
+
+        <div class="form-group">
+            <button id="mySubmitButton" type="submit" class="btn btn-success">Next</button>
+            <div id="mySpinner" style="display: none;"><i class="fa fa-spinner fa-spin"></i></div>
+        </div>
+    }
+
+</fieldset>

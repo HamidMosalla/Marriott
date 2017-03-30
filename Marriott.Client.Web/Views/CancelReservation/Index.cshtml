@@ -1,0 +1,28 @@
+﻿@using Marriott.Client.Web.Extensions
+@using Marriott.Client.Web.Models.CancelReservation
+@model CancelReservation
+
+@{
+    //ViewBag.ProgressBar = CheckInController.ProgressBarText;
+}
+
+<div>
+    <fieldset>
+        <div class="well">
+            Cancel Reservation
+        </div>
+        
+        @using (Html.BeginForm("Index"))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.ExternalId)
+                <p>@Html.TextBoxWithBlankDefaultIntegerValue(nameof(CancelReservation.ExternalId), Model.ExternalId, new { @class = "form-control" })</p>
+                @Html.ValidationMessageFor(model => model.ExternalId, "", new { @class = "text-danger" })
+            </div>
+
+            <input type="submit" class="btn btn-success" value="Cancel Reservation" />
+        }
+    </fieldset>
+</div>

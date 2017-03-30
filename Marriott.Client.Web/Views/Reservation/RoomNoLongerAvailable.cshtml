@@ -1,0 +1,15 @@
+﻿@using Marriott.Client.Web.Controllers
+@model Marriott.Client.Web.Models.Reservation.Reservation
+
+@{
+    ViewBag.ProgressBar = ReservationController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 3;
+}
+
+<div>
+    <fieldset>
+        <div class="alert alert-danger">
+            We're sorry. That room type for the check in and check out dates you entered is no longer available. Please try your search again.
+        </div>
+    </fieldset>
+</div>

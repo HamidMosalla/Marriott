@@ -1,0 +1,60 @@
+﻿@using Marriott.Client.Web.Extensions
+
+@model Marriott.Business.Guest.GuestInformation
+
+<div class="form-group">
+    @Html.LabelWithColonFor(x => x.Email, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", type = "email" })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelWithColonFor(x => x.FirstName, new { @class = "control-label col-md-2", style = "white-space: nowrap" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelWithColonFor(x => x.LastName, new { @class = "control-label col-md-2", style = "white-space: nowrap" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group" style="white-space: nowrap;">
+    @Html.LabelWithColonFor(x => x.Address1, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.Address1, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Address1, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group" style="white-space: nowrap;">
+    @Html.LabelWithColonFor(x => x.Address2, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.Address2, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Address2, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelWithColonFor(x => x.City, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelWithColonFor(x => x.State, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.State, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelWithColonFor(x => x.PostalCode, new { @class = "control-label col-md-2", style = "white-space: nowrap" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+    </div>
+</div>

@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marriott.Client.Web", "Marriott.Client.Web\Marriott.Client.Web.csproj", "{99EADD0D-144C-4E8D-8742-BBCBC1EB6082}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{609AC364-3CFD-4825-B0B5-45DA576C9F0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ITOps", "ITOps", "{A7CD0DDD-C546-40CE-B896-B4EEEB602F83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{53C56F5A-8874-476E-95DF-FFD18DD71F09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marriott.Business.Endpoint", "Marriott.Business.Endpoint\Marriott.Business.Endpoint.csproj", "{9C810FA9-35C9-4DBB-9638-08944E987B44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marriott.Business", "Marriott.Business\Marriott.Business.csproj", "{55D040D3-3DBA-442D-A90A-D1CE31CECCB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marriott.Conventions", "Marriott.Conventions\Marriott.Conventions.csproj", "{8F6DA018-F3A0-42E5-B426-C12205F24D5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Conventions", "Conventions", "{05A83B58-5C2C-477B-BFED-2E698C86870B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E2811943-90ED-432C-BEBD-7CA67746C468}"
+	ProjectSection(SolutionItems) = preProject
+		CleanMarriott.ps1 = CleanMarriott.ps1
+		DropMarriottDatabase.ps1 = DropMarriottDatabase.ps1
+		QuestionsForDomainExperts.txt = QuestionsForDomainExperts.txt
+		ToDo.txt = ToDo.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marriott.ITOps", "Marriott.ITOps\Marriott.ITOps.csproj", "{0A0A7365-1307-4B11-B879-6A39AA364A86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marriott.External.Events", "Marriott.External.Events\Marriott.External.Events.csproj", "{A28C6524-79BB-4219-9CFA-A55A6C27C111}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marriott.ITOps.Endpoint", "Marriott.ITOps.Endpoint\Marriott.ITOps.Endpoint.csproj", "{B76D1639-3DC9-4CF3-BEE9-7FA768CB0E34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99EADD0D-144C-4E8D-8742-BBCBC1EB6082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99EADD0D-144C-4E8D-8742-BBCBC1EB6082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99EADD0D-144C-4E8D-8742-BBCBC1EB6082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99EADD0D-144C-4E8D-8742-BBCBC1EB6082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C810FA9-35C9-4DBB-9638-08944E987B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C810FA9-35C9-4DBB-9638-08944E987B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C810FA9-35C9-4DBB-9638-08944E987B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C810FA9-35C9-4DBB-9638-08944E987B44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D040D3-3DBA-442D-A90A-D1CE31CECCB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D040D3-3DBA-442D-A90A-D1CE31CECCB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D040D3-3DBA-442D-A90A-D1CE31CECCB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D040D3-3DBA-442D-A90A-D1CE31CECCB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F6DA018-F3A0-42E5-B426-C12205F24D5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6DA018-F3A0-42E5-B426-C12205F24D5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6DA018-F3A0-42E5-B426-C12205F24D5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6DA018-F3A0-42E5-B426-C12205F24D5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A0A7365-1307-4B11-B879-6A39AA364A86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A0A7365-1307-4B11-B879-6A39AA364A86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A0A7365-1307-4B11-B879-6A39AA364A86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A0A7365-1307-4B11-B879-6A39AA364A86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A28C6524-79BB-4219-9CFA-A55A6C27C111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28C6524-79BB-4219-9CFA-A55A6C27C111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28C6524-79BB-4219-9CFA-A55A6C27C111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28C6524-79BB-4219-9CFA-A55A6C27C111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B76D1639-3DC9-4CF3-BEE9-7FA768CB0E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B76D1639-3DC9-4CF3-BEE9-7FA768CB0E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B76D1639-3DC9-4CF3-BEE9-7FA768CB0E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B76D1639-3DC9-4CF3-BEE9-7FA768CB0E34}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{99EADD0D-144C-4E8D-8742-BBCBC1EB6082} = {53C56F5A-8874-476E-95DF-FFD18DD71F09}
+		{53C56F5A-8874-476E-95DF-FFD18DD71F09} = {A7CD0DDD-C546-40CE-B896-B4EEEB602F83}
+		{9C810FA9-35C9-4DBB-9638-08944E987B44} = {609AC364-3CFD-4825-B0B5-45DA576C9F0E}
+		{55D040D3-3DBA-442D-A90A-D1CE31CECCB2} = {609AC364-3CFD-4825-B0B5-45DA576C9F0E}
+		{8F6DA018-F3A0-42E5-B426-C12205F24D5F} = {05A83B58-5C2C-477B-BFED-2E698C86870B}
+		{05A83B58-5C2C-477B-BFED-2E698C86870B} = {A7CD0DDD-C546-40CE-B896-B4EEEB602F83}
+		{0A0A7365-1307-4B11-B879-6A39AA364A86} = {A7CD0DDD-C546-40CE-B896-B4EEEB602F83}
+		{A28C6524-79BB-4219-9CFA-A55A6C27C111} = {609AC364-3CFD-4825-B0B5-45DA576C9F0E}
+		{B76D1639-3DC9-4CF3-BEE9-7FA768CB0E34} = {A7CD0DDD-C546-40CE-B896-B4EEEB602F83}
+	EndGlobalSection
+EndGlobal

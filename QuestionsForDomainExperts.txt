@@ -1,0 +1,94 @@
+Questions for Domain Experts
+----------------------------
+- in the case we cannot allocate a room, what is the compensating action of the fda?
+	- search for another room (via Reservation) of better/lesser type?
+		- if found, create a reservation, adn check the guest in under that reservation?
+			- if this happens, how do we cancel the other reservation w/out charing them guest for something that is the hotel's falut?
+	- what if the hotel is booked, and there ARE no more rooms?
+		- my guess is the fda would call a partnering hotel and get the guest a room there? The hotel would pay for the room.
+		- in this case the fda would need a way to cancel the reservation w/out charging the guest a reservation cancellation fee and also make sure the guest is not charged a no-show fee
+
+- in the case where the check in system is down, how does the fda go about checking a guest in?
+	- how does the fda record the info they need in order to get the system back up to speed when the system comes online?
+
+- is RoomNumber a stable business abstraction to share across boundaries?
+	- basically, how often doe room numbers change in a given hotel? across hotels?
+	- would we ever have a case where an existing room number would "go away"?
+
+- given the following scenario, should be still charge the guests's credit card a reservation cancellation fee?
+	- guest shows up to check in
+	- guest cannot provide a credit card that will take the hold for the room
+	- in this case, we need to "clear" the reservation in hopes that some other guest would get a hold of the room over the duration that the current guest cannot fulfill.
+	- the way we "delete" reservations is we mark them as cancelled.
+	- b/c the this reservation would be marked as cancelled within the time span of the reservation cancellation policy fee, we would also attempt to charge the card associated with the registration
+	  (NOT the checkin) for the fee electronically
+	- do we even care about this? What are legitimate compensating actions for this type of workflow?
+
+- should our overbooking policy be invoked on the inital room search UI, or should the overbooking policy be invoked on the check right before we send CreateReservation?
+	- invoking the overbooking policy earlier on in the search process could lead to more and more hotel overbookings and having to redirect guests to other hotels to fullfill our reservation responsibilities
+		- aka, the hotel is losing money, which is bad, but even worse, the hotel's reputation is suffering
+	- invoking overbooking too late could leave us with too many rooms available and the hotel not booked to capacity properly
+		- aka, the hotel is losing money
+	- MIKE: my decision is to invoke the overbookign policy at the point we  make the final check before creating the Reservation
+
+- assuming we want to capture either the nightly rate or the total room rate for a given room type id when a reservation is being created so the total room reate seen by the front desk agent at the point they check in matches what the guest was promised at the point of reservation
+	- do I want to store RoomRateTotal, or the raw room rate and then use the nights of the stay to calculate total?
+	- storing RoomRateTotal would be easier, b/c then I would not have to calcualte the total based on the total nights of the reservation
+		- however, in the "real world", a Reservation duration could be changed which could change the room rate total
+		- and if the Reservation duration WAS changed, we would not have access to the per night rate that was used to calculate the room rate total at the point of Reservation:
+			- if a Reservation changes (aka, they add a night), do we bill them at the nightly rate for the room at the point they reserved the room?
+			OR
+			- do we recalculate the entire stay's total rate at the current room rate when the reservation was changed and use the new reservation duration to come up with a new room total?
+	- MIKE: for now, b/c I don't have access to a domain expert, and b/c one of the UC's is NOT change/alter Reservation, I'm going to store the room rate total at the point of Reservation
+
+- does the hotel run the credit card for the final amount when the guest checks out?
+	- if not, when is the credit card run/charged for the hotel stay?
+	- if so, what is the process if a guest cannot pay for their room at the end of their stay?
+		- assuming using the credit card we have on file that the hold was placed on?
+		- is the guest 
+
+- when is a physical room allocated to a guest? Is it at the point they check in to the hotel, or is the phsycial room assigned to them before checkin?
+	- if so, what other fators contribute to the timing of the assignement?
+	- the reason I'm asking this is in the case where a guest might want to extend their stay at the hotel, many times, they'll ask the front desk if they can extend their stay, and the 
+	  front desk might say that room is taken starting in 2 days, we can extend your stay but you'll have to move rooms.
+	- if the room is taken in 2 days, that means the physical room assignment has already taken place for the next guest after your origina check out date?
+	- some research:
+		- "How do hotels assign rooms to guests?" - https://www.quora.com/How-do-hotels-assign-rooms-to-guests
+			- "First all special requests (first floor, adjoining rooms, etc) are assigned.  Then, the person assigning rooms will "shrink the house" with the remaining assignments, which basically means bunching all the rooms as close together as possible so housekeeping does not have to go all over the property to clean the rooms. Shrinking the house can be a real time saver and productivity boost, especially in high-rise hotels with many levels, or hotels with separate wings and/or buildings."
+			- "Inventory is not just made up of how many rooms vs. number of reservations. There is maintenance, out of order rooms, dropped rooms from the night before to save on labor, etc. "
+			- MIKE: there seems to be a business concept of "blocking rooms"
+			- MIKE: looks like room assignments ARE done the day before a guest checks in:
+				- 7 days in advance: assign special features, the room features that cannot be changed; balconies, high floor, near the elevator, far away from the elevator, room with kitchen, etc...
+				- 3 days in advance: assign your VIP, always the most importants first, block the room in advance if needed
+				- 2 days in advance: assign rooms with specials requests: honeymooners, special attention guests, etc..
+				- 1 days in advance; assign all rooms. Start by your tope categories and then go down so you are making sure that guests paying for a specific room type they will the best ones out of it. So start by special suites, senior suites, junior suites, deluxe, etc...
+				- Same day: print n Early Arrival list and try to make sure that those rooms are prioritize together with housekeeping, you may want to move these reservations to Vacant Clean or at least Vacant dirty rooms
+		- "Dynamic Room Allocation: A Boon for Front Desk Managers - http://www.hotelogix.com/blog/2015/03/16/dynamic-room-allocation-a-boon-for-front-desk-managers/?utm_source=quora&utm_medium=mar261&utm_campaign=quoraans
+			- "During advance booking or reservation confirmation, only a room type is booked and a room number is not yet allocated to the guest"
+
+- would you ever allow a guest to check in if they can't supply a valid credit card that has enough credit for the hold?
+
+- is the over booking policy something set in stone, or is at dynamic thing?
+	- aka, based on other factors like room cost, room availability, time of year, length of stay, etc???
+
+- is credit card number alone to uniquely identify credit card, or does it need to be a composite key of cc number/expiry month/year?
+	- http://stackoverflow.com/questions/23459040/is-a-combination-of-credit-cards-number-and-expiration-date-unique
+
+- given the following scenario for checking a guest in and allocating a physical room
+	- if the room (or room type) is still being cleaned by housekeeping, how do you "check a guest in" or can you not do it?
+	- explain the saying "your room is still being cleaned"
+		- does this mean the guest is allocated a physical room BEFORE they actually beging their checkin process?
+		- does the system allocate a room to a guest the day of check in, before, etc...?
+		- or, does "your room is being cleaned" mean that all room types of the type on your reservation are being cleaned, and b/c this guest showed up for early check in, they will be allocted the first clean room type that becomes available?
+
+Research Links
+--------------
+- "Reservation Pattern" - http://arnon.me/soa-patterns/reservation/
+- "Housekeeping Management" - http://www.resortdata.com/housekeeping-management/
+- "Hotel Charges My Card 5 Months After a Stay. How Long Is Too Long??" - http://viewfromthewing.boardingarea.com/2016/04/18/hotel-charges-card-5-months-stay-long-long/
+- "Uhhhm...didn't you already receive your receipt under the door this morning?" - http://www.flyertalk.com/forum/travelbuzz/728292-uhhhm-didn-t-you-already-receive-your-receipt-under-door-morning.html
+- "does a printed hotel receipt show price you paid" - https://www.tripadvisor.com/ShowTopic-g32655-i61-k5466666-Does_a_printed_hotel_receipt_show_price_you_paid-Los_Angeles_California.html
+- "Is there any reason to check out when leaving a hotel, rather than just leaving?" - https://www.quora.com/Is-there-any-reason-to-check-out-when-leaving-a-hotel-rather-than-just-leaving"
+- "Is a combination of credit card's number and expiration date unique?"- http://stackoverflow.com/questions/23459040/is-a-combination-of-credit-cards-number-and-expiration-date-unique
+- "Dynamic Room Allocation: A Boon for Front Desk Managers - http://www.hotelogix.com/blog/2015/03/16/dynamic-room-allocation-a-boon-for-front-desk-managers/?utm_source=quora&utm_medium=mar261&utm_campaign=quoraans
+- "How do hotels assign rooms to guests?" - https://www.quora.com/How-do-hotels-assign-rooms-to-guests

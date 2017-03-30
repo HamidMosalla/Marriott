@@ -1,0 +1,117 @@
+@using Marriott.Client.Web.Controllers
+@model Marriott.Client.Web.Models.Reservation.Reservation
+
+@{
+    ViewBag.ProgressBar = ReservationController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 3;
+}
+
+@section scripts
+{
+    <script src="~/Scripts/Reservation/timeLeftOnPendingReservation.js"></script>
+    <script>
+        CountDownTimer(@ViewBag.TimeLeftOnPendingReservation);
+    </script>
+}
+
+<div>
+    <fieldset>
+               
+        <div class="well">
+            <div class="row">
+                <div class="col-md-3">Please review all your information</div>
+                <div class="col-md-7">&nbsp;</div>
+                <div class="col-md-2"><div id="Counter" name="Counter"></div></div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("Reserve", "Reservation"))
+        {
+            <input type="hidden" id="TimeLeftOnPendingReservation" name="TimeLeftOnPendingReservation" value="@ViewBag.TimeLeftOnPendingReservation">
+
+            <div class="row">
+                <div class="col-md-4">
+                    
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Room Details</div>
+                        <div class="panel-body" style="min-height: 250px;">
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.CheckIn): @Model.CheckIn.ToShortDateString()
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.CheckOut): @Model.CheckOut.ToShortDateString()
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.RoomInformation.RoomTypeName): @Html.DisplayTextFor(x => x.RoomInformation.RoomTypeName)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.RoomInformation.RoomRate): $@Html.DisplayTextFor(x => x.RoomInformation.RoomRate)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.RoomInformation.TotalRoomRate): $@Html.DisplayTextFor(x => x.RoomInformation.TotalRoomRate)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+                    
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Guest Information</div>
+                        <div class="panel-body" style="min-height: 250px;">
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.Email): @Html.DisplayTextFor(x => x.GuestInformation.Email)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.FirstName): @Html.DisplayTextFor(x => x.GuestInformation.FirstName)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.LastName): @Html.DisplayTextFor(x => x.GuestInformation.LastName)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.Address1): @Html.DisplayTextFor(x => x.GuestInformation.Address1)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.Address2): @Html.DisplayTextFor(x => x.GuestInformation.Address2)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.City): @Html.DisplayTextFor(x => x.GuestInformation.City)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.State): @Html.DisplayTextFor(x => x.GuestInformation.State)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.GuestInformation.PostalCode): @Html.DisplayTextFor(x => x.GuestInformation.PostalCode)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="col-md-4">
+                    
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Payment Information</div>
+                        <div class="panel-body" style="min-height: 250px;">
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.PaymentInformation.CreditCardNumber): @Html.DisplayTextFor(x => x.PaymentInformation.CreditCardNumber)
+                            </div>
+                            <div class="field inline">
+                                @Html.Label("Credit Card Expiration"): @Html.DisplayTextFor(x => x.PaymentInformation.CreditCardExpiryMonth)/@Html.DisplayTextFor(x => x.PaymentInformation.CreditCardExpiryYear)
+                            </div>
+                            <div class="field inline">
+                                @Html.LabelFor(x => x.PaymentInformation.CreditCardCcv): @Html.DisplayTextFor(x => x.PaymentInformation.CreditCardCcv)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Book Now" />
+            </div>
+        }
+    </fieldset>
+</div>

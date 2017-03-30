@@ -1,0 +1,24 @@
+﻿@using Marriott.Business.Billing
+@using Marriott.Client.Web.Extensions
+@using Marriott.Client.Web.Models
+
+@model PaymentInformation
+
+<div class="form-group">
+    @Html.LabelFor(x => x.CreditCardNumber)
+    @Html.TextBoxWithBlankDefaultIntegerValue(nameof(PaymentInformation.CreditCardNumber), Model.CreditCardNumber, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.CreditCardNumber, "", new { @class = "text-danger" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(x => x.CreditCardExpiry)
+    <div class="form-inline">
+        @Html.DropDownListFor(x => x.CreditCardExpiryMonth, CreditCardSelectListService.GetMonthList(), new { @class = "form-control", style = "width: 63px" })
+        /
+        @Html.DropDownListFor(x => x.CreditCardExpiryYear, CreditCardSelectListService.GetYearList(), new { @class = "form-control", style = "width: 79px" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(x => x.CreditCardCcv)
+    @Html.TextBoxWithBlankDefaultIntegerValue(nameof(PaymentInformation.CreditCardCcv), Model.CreditCardCcv, new { @class = "form-control", style = "width: 50px", maxlength = "3" })
+    @Html.ValidationMessageFor(x => x.CreditCardCcv, "", new { @class = "text-danger" })
+</div>

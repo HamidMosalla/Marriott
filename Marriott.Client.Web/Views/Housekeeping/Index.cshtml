@@ -1,0 +1,31 @@
+﻿@using System.Web.Mvc.Html
+@using Marriott.Client.Web.Extensions
+@model Marriott.Client.Web.Models.Housekeeping.Index
+
+<div>
+    
+    <div class="well">
+        Rooms and their clean status as of <strong>@DateTime.Now.Date.ToShortDateString()</strong>
+    </div>
+
+    @using (Html.BeginForm("Index", "Housekeeping"))
+    {
+        <table>
+            @for (var i = 0; i < Model.Rooms.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(m => m.Rooms[i].RoomNumber)
+                        @Html.CheckBoxFor(m => m.Rooms[i].Clean, $"Room {Model.Rooms[i].RoomNumber}", new {}, false)        
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <p></p>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Update</button>
+        </div>
+    }
+</div>

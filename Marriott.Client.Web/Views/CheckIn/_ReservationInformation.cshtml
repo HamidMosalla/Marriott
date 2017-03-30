@@ -1,0 +1,27 @@
+@using Marriott.Client.Web.Extensions
+
+@model Marriott.Client.Web.Models.CheckIn.ReservationInformation
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Reservation Id: @Html.DisplayTextFor(x => x.ExternalId)</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-2">@Html.LabelWithColonFor(x => x.CheckIn)</div>
+            <div class="col-md-4">@Model.CheckIn.ToShortDateString()</div>
+            <div class="col-md-2">@Html.LabelWithColonFor(x => x.TotalNightsOfStay)</div>
+            <div class="col-md-4">@Html.DisplayTextFor(x => x.TotalNightsOfStay)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">@Html.LabelWithColonFor(x => x.CheckOut)</div>
+            <div class="col-md-4">@Model.CheckOut.ToShortDateString()</div>
+            <div class="col-md-2">@Html.LabelWithColonFor(x => x.RoomRate)</div>
+            <div class="col-md-4">$@Html.DisplayTextFor(x => x.RoomRate)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">@Html.LabelWithColonFor(x => x.RoomTypeName)</div>
+            <div class="col-md-4">@Html.DisplayTextFor(x => x.RoomTypeName)</div>
+            <div class="col-md-2">@Html.LabelWithColonFor(x => x.TotalRoomRate)</div>
+            <div class="col-md-4">$@Html.DisplayTextFor(x => x.TotalRoomRate)</div>
+        </div>
+    </div>
+</div>

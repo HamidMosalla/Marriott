@@ -1,0 +1,38 @@
+﻿@using Marriott.Client.Web.Controllers
+
+@model Marriott.Business.Billing.PaymentInformation
+
+@{
+    ViewBag.ProgressBar = CheckInController.ProgressBarText;
+    ViewBag.ProgressBarActiveNode = 2;
+}
+
+@section scripts 
+{
+    <script src="~/Scripts/jquery.signalR-2.2.1.js"></script>
+    <script src="~/SignalR/hubs"></script>
+    <script src="../../Scripts/CheckIn/placeHoldOnCreditCard.js"></script>
+}
+
+<div id="errorMessage" class="alert alert-danger" style="display: none;">
+    Hold Failed on credit card. Please try a different credit card.
+    <p>&nbsp;</p>
+    FDA: if the guest cannot provide a credit card that takes the hold, they cannot check in. In this case, please @(Html.ActionLink("deallocate the room now", "DeallocateRoomForNonPayment", new { Model.ReservationId })).
+</div>
+
+<fieldset>
+    
+    @using (Html.BeginForm("VerifyPaymentInformation", "CheckIn", FormMethod.Post, new { id = "form" }))
+    {
+        @Html.HiddenFor(x => x.ReservationId)
+        <input type="hidden" id="PlaceHoldOnCreditCardFailed" name="PlaceHoldOnCreditCardFailed" value="NotRun"/>
+
+        @Html.Partial("_EditPaymentInformation", Model)
+
+        <div class="form-group">
+            <button id="mySubmitButton" type="submit" class="btn btn-success">Continue</button>
+            <div id="mySpinner" style="display: none;"><i class="fa fa-spinner fa-spin"></i>
+            </div>
+        </div>
+    }
+</fieldset>

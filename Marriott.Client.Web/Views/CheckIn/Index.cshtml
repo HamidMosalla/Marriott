@@ -1,0 +1,68 @@
+﻿@using Marriott.Client.Web.Controllers
+@model Marriott.Client.Web.Models.CheckIn.Search
+
+@{
+    ViewBag.ProgressBar = CheckInController.ProgressBarText;
+}
+
+<div>
+    <fieldset>
+            
+        <div class="well">
+            Search for a reservation
+        </div>
+
+        @using (Html.BeginForm("Index"))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Email)
+                <p>@Html.TextBoxFor(x => x.Email, new { @class = "form-control" })</p>
+            </div>
+
+            <input type="submit" class="btn btn-success" value="Search"/>
+        }
+    </fieldset>
+
+    <div>&nbsp;</div>
+
+    <fieldset>
+        <div>
+            @if (Model.SearchExecuted && !Model.Results.Any())
+            {
+                <div class="alert alert-warning">
+                    No results found for the entered criteria. Please try again.
+                </div>
+            }
+            @if (Model.Results.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Reservation Id</th>
+                            <th>Name</th>
+                            <th>Room Type</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var result in Model.Results)
+                        {
+                            <tr>
+                                <td>@result.ExternalId</td>
+                                <td>@result.FullName</td>
+                                <td>@result.RoomType</td>
+                                <td>@result.CheckIn.ToShortDateString()</td>
+                                <td>@result.CheckOut.ToShortDateString()</td>
+                                <td>@Html.ActionLink("Begin Check In", nameof(CheckInController.VerifyGuestInformation), new { reservationId = result.ReservationId }, new {  @class = "btn btn-success", role = "button" })</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </fieldset>
+</div>
