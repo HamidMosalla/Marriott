@@ -61,3 +61,7 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+#static/* linguist-vendored
+#D:\Projects\Marriott\Marriott.Client.Web\Scripts
+Marriott.Client.Web/Scripts/*.js linguist-vendored
