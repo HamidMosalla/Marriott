@@ -32,10 +32,10 @@ Identify any data that is collaborative and try to determine an SLA for that dat
 - look for compensating actions when commands fail and/or exceptions are thrown. Most of the time, throwing an exception doens't really do much for the end user as they don't know what they did to cause the exception. If they do know what they did to cause the exception, they usually don't know how to fix it. **Compensating business actions are usually at the crux of how a business handles money and resources.** More often that not, we'll see compensating actions come into play with what developers initially mistake as [race conditions](http://udidahan.com/2010/08/31/race-conditions-dont-exist/)
 
 ### Boundary Data Isolation
-- one boundary cannot talk to or access another boundaries data.
+- one boundary cannot talk to or access another boundary's data. Only messaging is allowed.
 - instead of going with a database per boundary, I opted instead to use a single physical database with a schema per boundary. This means table names are prefixed with the boundary name (`Reservation.ConfirmedReservation`, `Marketing.RoomType`, etc...)
 - all tables are in the Marriott database
-- this way, I'm still logically separating the data by boundary, but physically, there is only one database to work with  
+- I'm still logically separating the data by boundary, but physically, there is only one database to work with  
 
 ## Solution/Project Structure
 A couple of notes on the physical structure of the solution and the projects in the solution.
