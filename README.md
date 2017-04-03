@@ -42,22 +42,22 @@ A couple of notes on the physical structure of the solution and the projects in 
 
 ### Business\Marriott.Business
 - this is where all boundaries are identified.
-- each folder is a business boundary. In a "real" system, these boundaries would likely be broken out into separate projects instead of all within on project to help with separation and not accidently taking a dependency on another boundary's internals
+- each folder is a business boundary. In a "real" system, these boundaries would likely be broken out into separate projects instead of all within one project to help with separation and not accidently taking a dependency on another boundary's internals
 - under each boundary folder (Billing, Guest, Housekeeping, etc...), you'll see folders for Commands, Events (these are internal events: they're only subscribed to by handlers in the same boundary), Data (the DbContext file per boundary) and maybe a Messages folder if the boundary is using request/reply
 - any class(es) not under a folder under each boundary-defined folder is most likely an EF controlled "entity" class. These classes end up as tables in the database
 - the `SeedingContext` class is a separatre DbContext class that basically populates the SiteSeeded table with whether or not the site has already seeded itself.
 
 ### Business\Marriott.Business.Endpoint
 - this is the NServiceBus endpoint for all business boundaries
-- in a real production system, you'd separate each boundary's endpoint into its own project, and most likely, the endpoint would run as a separate windows service. NServiceBus 6 allows you to run multiple endpoints in the same windows process, so this is not a hard and fast rule. It really depends on the amount of traffic, contention and collaboration you expect per endpoint.
+- in a real production system, you'd separate each boundary's endpoint into its own project, and most likely, the endpoint would run as a separate windows service. NServiceBus 6 allows you to run multiple endpoints in the same windows service, so this is not a hard and fast rule. It really depends on the amount of traffic, contention and collaboration you expect per endpoint.
 - note the folder structure is the same as the Business\Marriott.Business project
-- all boundary folders have a Handler folder which contain the command, event and message handlers
+- all boundary folders have a Handler folder which contains the command, event and message handlers
 - the `EnsureTablesAreCreatedWhenConfiguringEndpoint` class is kind of a "cheat" in the fact that it coordinates the intial seeding of certain contexts if the site has not been seeded yet. Why is it a cheat? Because it directly talks to multiple boundaries DbContexts directly. If this solution were to have it's boundarys and their respective endpoints broken out into separate projects, there would need to be a more robust seeding solution.
 
 ### Business\Marriott.External.Events
-- this is where any events that are consumed cross-boundary live. We want a separate project for these events because they're different than "internal" the internal events I mentioned earlier.
+- events that are consumed cross-boundary are in this folder. We want a separate project for these events because they're different than "internal" the internal events I mentioned earlier.
 - internal events (events published and consumed by the same endpoint) can carry extra boundary-specific data on them
-- external events should only carry a very minimal amount of data on them and the data that is carried should be a stable business abstraction in the overall system.
+- external events should only carry a very minimal amount of data on them and the data that is carried should only be stable business abstractions.
 
 ### ITOps
 
