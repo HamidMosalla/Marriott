@@ -20,7 +20,7 @@ Cohesion is the hardest thing to get right. IMHO, this is what separates "good" 
 Identify data that needs to be transactionally consistent on a use case by use case basis. Finding this transactional consistency in data allows us to group data together that changes together (high cohesion) and then implement code that enforces that transactional consistency. This can also be considered part of the boundary identification process. More often than not, the UI is a great tool to discover what data needs to change together transactionally. Combine the UI with the use cases to really get down to the metal.
 
 ### Collaborative Data
-Identify any data that is collaborative and try to determine an SLA for that data. Since searching for and reserving a room is not only collaborative, but could also have contention, I used the Reservation Pattern for these two processes in order to address the collobration and contention around a fixed set of resources (the hotel's rooms)
+Identify any data that is collaborative and try to determine an SLA for that data. Since searching for and reserving a room is not only collaborative, but could also have contention, I used the [Reservation Pattern](http://freecontent.manning.com/wp-content/uploads/reservation-pattern.pdf) for these two processes in order to address the collobration and contention around a fixed set of resources (the hotel's rooms)
 
 ### Guiding Principles
 - rely on asynchronous messaging (fire and forget) to "do things" in the system and publish events when "things are done". 
@@ -29,7 +29,7 @@ Identify any data that is collaborative and try to determine an SLA for that dat
 - identify the minimal amount of data that needs to be on published events, especially if they are external events that can be subscribed to across boundaries.
 - only share stable business abstractions across boundaries
 - rely on NServiceBus Sagas to coordinate long running business processes (no polling!!!), handle messages to control the workflow and dispatch messages to "do things" in the system. Sagas are coordinators, not implementors.
-- look for compensating actions when commands fail and/or exceptions are thrown. Most of the time, throwing an exception doens't really do much for the end user as they don't know what they did to cause the exception. If they do know what they did to cause the exception, they usually don't know how to fix it. **Compensating business actions are usually at the crux of how a business handles money and resources.** More often that not, we'll see compensating actions come into play with what we as developers initially mistake as race conditions.
+- look for compensating actions when commands fail and/or exceptions are thrown. Most of the time, throwing an exception doens't really do much for the end user as they don't know what they did to cause the exception. If they do know what they did to cause the exception, they usually don't know how to fix it. **Compensating business actions are usually at the crux of how a business handles money and resources.** More often that not, we'll see compensating actions come into play with what we as developers initially mistake as (race conditions)[http://udidahan.com/2010/08/31/race-conditions-dont-exist/]
 
 ### Boundary Data Isolation
 - one boundary cannot talk to or access another boundaries data.
