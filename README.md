@@ -6,7 +6,7 @@ My attempt at building a hotel registration system like Marriott.com using SOA a
 - NServiceBus 6 for the message bus
 - EF6/Sql Server for the database. You'll need to have some version of Sql Server installed locally in order for the project to run correctly
 - SignalR 
-  - SignalR hubs are used to dispatch commands.
+  - SignalR hubs are used to invoke synchronous services directly from the UI/controller layer.
   - this is not a complete implementation, as exception handling/cancellation tokens have not been coded for any SignalR invocations
   - the handlers for the SignalR-dispatched commands using `context.Reply` to send a message back to the "UI"
   - the handlers for the messages sent via `context.Reply` get the HubContext and the specific client that sent the message to becone with, and invokes some javascript on that razor view/page.
